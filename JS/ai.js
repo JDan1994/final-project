@@ -1,9 +1,6 @@
 const winner = document.getElementById("staticBackdropLabel");
-
-
 const cells = document.querySelectorAll(".cell");
 const turnInfo = document.getElementById("turn");
-
 
 const players = {
     x: "x",
@@ -14,6 +11,7 @@ let isGameRunning = false;
 
 let boardState = Array(9).fill("");
 
+// Выигрышные комбинации
 const winLines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -25,13 +23,14 @@ const winLines = [
     [0, 4, 8],
 ];
 
+//Инициализация игры
 function initializeGame() {
     cells.forEach(cell => {
         cell.addEventListener("click", clickCell);
     });
 }
 
-
+// Функция старта игры
 function startGame() {
     isGameRunning = true;
     currentPlayer = players.x;
@@ -42,7 +41,7 @@ function startGame() {
     };
 }
 
-
+// Функция проверяет, можно ли кликнуть по клетке, записывает новое значение в пустую клетку и приводит к смене хода
 function clickCell() {
     if(!isGameRunning) {
         return;
@@ -56,19 +55,17 @@ function clickCell() {
     if(checkGameOver()) {
         return finishGame();
     }
-
      if (currentPlayer === players.x) {
         currentPlayer = players.o;
      } else {
         currentPlayer = players.x;
      }
-
-
      if (currentPlayer == players.x){
         turnInfo.textContent = "Ход крестиков";
     } else {
         turnInfo.textContent = "Ход ноликов";
     };
+    // Данная часть кода отвечает за "логику" соперника, она обращается в случайном порядке к игровым клеткам и взаимодействует со свободными
     setInterval(function cheker() {
             if (currentPlayer == players.o) {
                 setTimeout(()=>document.getElementsByClassName("cell")[randomInteger(0, 8)].click(),100)
@@ -76,7 +73,7 @@ function clickCell() {
         }, 2000)
 }
 
-
+//Генерация рандома
 function randomInteger(min, max) {
     // случайное число от min до (max+1)
     let rand = min + Math.random() * (max + 1 - min);
@@ -84,7 +81,7 @@ function randomInteger(min, max) {
   }
 
 
-
+//Функция проверки соответствия победных значений
 function checkLine(line) {
     const [a, b, c] = line;
 
